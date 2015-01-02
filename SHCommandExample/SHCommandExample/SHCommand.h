@@ -37,7 +37,7 @@
 
 @protocol SHCommandDelegate <NSObject>
 
-- (void) commandDidFinish:(SHCommand*)command;
+- (void) commandDidFinish:(SHCommand*)command withExitCode:(int)iExitCode;
 
 - (void) outputData:(NSData*)data providedByCommand:(SHCommand*)command;
 - (void) errorData:(NSData*)data providedByCommand:(SHCommand*)command;

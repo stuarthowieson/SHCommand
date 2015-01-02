@@ -15,10 +15,12 @@
     [super viewDidLoad];
 }
 
-- (void) commandDidFinish:(SHCommand *)command
+- (void) commandDidFinish:(SHCommand *)command withExitCode:(int)iExitCode
 {
     [[self progressExecuting] stopAnimation:self];
     [[self progressExecuting] setHidden:YES];
+    
+    [[self textOutput] setStringValue:[NSString stringWithFormat:@"FINISHED: Exit Code %d", iExitCode]];
 }
 
 - (void) outputData:(NSData *)data providedByCommand:(SHCommand *)command

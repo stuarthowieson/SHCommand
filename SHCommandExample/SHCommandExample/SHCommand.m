@@ -107,9 +107,9 @@
 	{
 		if (m_delegate)
 		{
-			if ([m_delegate respondsToSelector:@selector(commandDidFinish:)])
+			if ([m_delegate respondsToSelector:@selector(commandDidFinish:withExitCode:)])
 			{
-				[m_delegate commandDidFinish:self];
+				[m_delegate commandDidFinish:self withExitCode:[m_task terminationStatus]];
 			}
 		}
 	}];

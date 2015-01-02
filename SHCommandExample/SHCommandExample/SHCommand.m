@@ -53,7 +53,10 @@
 
 - (void) setArgumentsArray:(NSArray*)arrayArguments
 {
-	[m_task setArguments:arrayArguments];
+	if (arrayArguments)
+	{
+		[m_task setArguments:arrayArguments];
+	}
 }
 
 - (void) setDelegate:(id<SHCommandDelegate>)delegate
@@ -78,6 +81,8 @@
 					[m_delegate outputData:data providedByCommand:self];
 				}
 			}
+			
+			[[m_pipeOut fileHandleForReading] waitForDataInBackgroundAndNotify];
 		}
 	}];
 	
@@ -93,6 +98,8 @@
 					[m_delegate errorData:data providedByCommand:self];
 				}
 			}
+			
+			[[m_pipeError fileHandleForReading] waitForDataInBackgroundAndNotify];
 		}
 	}];
 	

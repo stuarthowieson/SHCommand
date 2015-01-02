@@ -13,24 +13,59 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    SHCommand* cmd = [SHCommand commandWithExecutablePath:@"/usr/bin/say" withArguments:@[@"-v", @"vicki", @"Shall we go to bed, babe?"] withDelegate:self];
-    [cmd execute];
 }
 
 - (void) commandDidFinish:(SHCommand *)command
 {
-    NSLog(@"DONE");
+    [[self progressExecuting] stopAnimation:self];
+    [[self progressExecuting] setHidden:YES];
 }
 
 - (void) outputData:(NSData *)data providedByCommand:(SHCommand *)command
 {
-    NSLog(@"%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+    NSString* szOutput = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    
+    [[self textOutput] setStringValue:szOutput];
 }
 
 - (void) errorData:(NSData *)data providedByCommand:(SHCommand *)command
 {
-    NSLog(@"%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+    NSLog(@"ERROR: %@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+}
+
+- (IBAction)buttonExecutePressed:(id)sender
+{
+    NSArray* arrayArguments = nil;
+    
+    if ([[[self textArguments] stringValue] length] > 0)
+    {
+        arrayArguments = [[[self textArguments] stringValue] componentsSeparatedByString:@","];
+    }
+    
+    if (m_command)
+    {
+        if ([m_command isExecuting])
+        {
+            [m_command stopExecuting];
+        }
+    }
+    
+    m_command = [SHCommand commandWithExecutablePath:[[self textCommand] stringValue] withArguments:arrayArguments withDelegate:self];
+    [m_command execute];
+    
+    [[self progressExecuting] startAnimation:self];
+    [[self progressExecuting] setHidden:NO];
+}
+
+- (IBAction)buttonProvidePressed:(id)sender
+{
+    if (m_command)
+    {
+        if ([m_command isExecuting])
+        {
+            [m_command provideInputData:[[[self textInput] stringValue] dataUsingEncoding:NSUTF8StringEncoding]];
+        }
+    }
 }
 
 @end

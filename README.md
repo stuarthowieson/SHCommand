@@ -26,9 +26,9 @@ Using it is even simpler:
 
 The command will run asynchronously and notify the delegate of events that occur. These events are consumed by implementing the **SHCommandDelegate** protocol and its methods within the command's delegate. These methods are:
 
-	(void) commandDidFinish:(SHCommand*)command withExitCode:(int)iExitCode;
-	(void) outputData:(NSData*)data providedByCommand:(SHCommand*)command;
-	(void) errorData:(NSData*)data providedByCommand:(SHCommand*)command;
+	-(void) commandDidFinish:(SHCommand*)command withExitCode:(int)iExitCode;
+	-(void) outputData:(NSData*)data providedByCommand:(SHCommand*)command;
+	-(void) errorData:(NSData*)data providedByCommand:(SHCommand*)command;
 
 If the command requires input, the following command can be used like so:
 
